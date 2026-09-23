@@ -1,0 +1,16 @@
+data/
+.env
+.conda
+.vscode
+src/data
+src/.vscode
+src/currency
+src/bronze
+src/silver
+src/transformed_tradecorp_data
+tests/.vscode
+TradeCorp ETL
+myvenv
+plugins
+notebooks/.conda
+notebooks/.venv

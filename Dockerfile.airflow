@@ -1,0 +1,10 @@
+FROM apache/airflow:2.10.0
+
+COPY --chown=airflow:root requirements-airflow.txt /tmp/requirements-airflow.txt
+
+RUN pip install --no-cache-dir -r /tmp/requirements-airflow.txt \
+    && rm -rf /tmp/requirements-airflow.txt ~/.cache/pip
+
+USER airflow
+
+CMD ["airflow", "standalone"]

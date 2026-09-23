@@ -1,0 +1,11 @@
+FROM jupyter/pyspark-notebook:python-3.11
+
+COPY requirements-spark.txt /tmp/requirements-spark.txt
+
+USER root
+
+RUN pip install --upgrade pip && \
+pip install --no-cache-dir -r /tmp/requirements-spark.txt && \
+rm -f /tmp/requirements-spark.txt
+
+USER jovyan
