@@ -21,7 +21,8 @@ The primary objectives of this project are:
 
 **Architecture**
 
-!image.png
+<img width="379" height="953" alt="image" src="https://github.com/user-attachments/assets/6c564d90-27b4-435a-b017-833ffef245ed" />
+
 
 **Technology Stack**
 
@@ -41,7 +42,8 @@ The primary objectives of this project are:
 
 **Project Structure**
 
-<img src="screen_capture/image.png" width="800"
+<img width="500" height="900" alt="image 1" src="https://github.com/user-attachments/assets/d7b7e9e6-501f-4ded-8b4a-1b357a6d4834" />
+
 
 **Data Architecture**
 
@@ -51,7 +53,7 @@ The project follows the Medallion Architecture pattern.
 
 Purpose:
 
-- Preserve original source data
+- Preserve source data
 - Enable data lineage
 - Provide replay capability
 
@@ -224,7 +226,8 @@ Apache Airflow coordinates all stages of the platform.
 
 **Pipeline DAG**
 
-!image.png
+<img width="271" height="715" alt="image 2" src="https://github.com/user-attachments/assets/3be773cf-8fe4-4377-b47c-36addc004e11" />
+
 
 **Airflow Components**
 
