@@ -41,7 +41,7 @@ The primary objectives of this project are:
 
 **Project Structure**
 
-!image.png
+<img src="screen_capture/image.png" width="800"
 
 **Data Architecture**
 
