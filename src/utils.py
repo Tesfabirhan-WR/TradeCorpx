@@ -1,5 +1,8 @@
+import os
+
 import pyspark.sql
-from pyspark.sql.functions import col, trim, upper, lit, initcap, concat_ws
+from pyspark.sql.functions import col, trim, upper, lit, initcap, concat_ws, to_date, year
+from pyspark.sql.types import DoubleType
 
 
 class DATA_PATH_currency:
@@ -10,7 +13,7 @@ class DATA_PATH_currency:
 
     @property
     def file_path(self):
-        return f"{self.base_path}/country_currency.csv"
+        return os.getenv("CURRENCY_CSV_PATH", f"{self.base_path}/country_currency.csv")
 
     def read(self, spark):
         """Read the currency CSV with its header and inferred schema."""
@@ -57,18 +60,23 @@ def spark_session(app_name="TradeCorp ETL Utils", master=None, configs=None):
 
     return builder.getOrCreate()
 
-def clean_orders(df):
-    from pyspark.sql.functions import col, when
-    from pyspark.sql.types import DateType, DoubleType
-    return (
-        df.filter(col("shipped_date").isNotNull())
-          .withColumn("order_date", col("order_date").cast(DateType()))
-          .withColumn("required_date", col("required_date").cast(DateType()))
-          .withColumn("shipped_date", col("shipped_date").cast(DateType()))
-          .withColumn("freight", col("freight").cast(DoubleType()))
-          .withColumnRenamed("ship_via", "shipper_id")
-          .withColumn("is_shipped", when(col("shipped_date").isNotNull(), True).otherwise(False))
+def clean_orders(
+    df_orders: pyspark.sql.DataFrame, order_year: int | None = None
+) -> pyspark.sql.DataFrame:
+    """Normalize order fields and retain shipped orders, optionally for one year."""
+    cleaned = (
+        df_orders
+        .withColumn("order_date", to_date(col("order_date")))
+        .withColumn("required_date", to_date(col("required_date")))
+        .withColumn("shipped_date", to_date(col("shipped_date")))
+        .withColumn("freight", col("freight").cast(DoubleType()))
+        .withColumnRenamed("ship_via", "shipper_id")
+        .filter(col("shipped_date").isNotNull())
+        .withColumn("is_shipped", col("shipped_date").isNotNull())
     )
+    if order_year is not None:
+        cleaned = cleaned.filter(year("order_date") == order_year)
+    return cleaned
 
 # products clean
 
@@ -228,7 +236,7 @@ if __name__=="__main__":
 
     df_customers, df_orders, df_order_details, df_products, df_categories, df_suppliers, df_employees, df_shippers, df_currency = data_extraction()
 
-    PATH = "/home/jovyan/data/bronze"
+    PATH = os.getenv("BRONZE_PATH", "/home/jovyan/data/bronze")
 
     # Appliquer le nettoyage à chaque table
     tables = {

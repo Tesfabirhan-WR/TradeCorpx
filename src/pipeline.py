@@ -55,7 +55,11 @@ class SilverPipeline:
         df_orders_enriched = build_data_enriched(raw_dataframes)
 
         # 3. Currency Enrichment Transformation
-        currency_transformer = CountryCurrencyTransformer(self.spark)
+        currency_path = os.getenv("CURRENCY_CSV_PATH")
+        currency_transformer = (
+            CountryCurrencyTransformer(self.spark, currency_csv_path=currency_path)
+            if currency_path else CountryCurrencyTransformer(self.spark)
+        )
         df_final_enriched = currency_transformer.enrich(
             df=df_orders_enriched,
             country_column="customer_country",
@@ -101,8 +105,8 @@ def main():
         .getOrCreate()
     )
 
-    BRONZE_PATH = "/home/jovyan/src/data/bronze"
-    SILVER_PATH = "/home/jovyan/src/data/silver"
+    BRONZE_PATH = os.getenv("BRONZE_PATH", "/home/jovyan/data/bronze")
+    SILVER_PATH = os.getenv("SILVER_PATH", "/home/jovyan/data/silver")
 
     pipeline = SilverPipeline(
         spark=spark,

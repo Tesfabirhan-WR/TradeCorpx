@@ -1,6 +1,7 @@
 apache-airflow-providers-docker
+pyspark==3.5.0
 requests==2.31.0
-azure-storage-blob==12.19.0
+azure-storage-blob==12.22.0
 python-dotenv==1.0.1
 psycopg2-binary
 asyncpg

@@ -8,6 +8,7 @@ from pyspark.sql import SparkSession
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from transformer import build_data_enriched
+from utils import clean_orders
 
 
 EXPECTED_COLUMNS = [
@@ -142,6 +143,24 @@ def sample_bronze_dfs(spark):
         "employees": df_employees,
         "shippers": df_shippers,
     }
+
+
+def test_clean_orders_parses_dates_and_optional_year(spark):
+    orders = spark.createDataFrame([
+        (1, "1997-05-01", "1997-05-10", "1997-05-02", "4.50", 2),
+        (2, "2026-01-01", "2026-01-10", "2026-01-02", "5.00", 2),
+        (3, "1997-05-01", "1997-05-10", "invalid", "6.00", 2),
+    ], ["order_id", "order_date", "required_date", "shipped_date", "freight", "ship_via"])
+
+    cleaned = {row.order_id: row for row in clean_orders(orders).collect()}
+    assert set(cleaned) == {1, 2}
+    assert cleaned[1].order_date == date(1997, 5, 1)
+    assert cleaned[1].freight == 4.5
+    assert cleaned[1].shipper_id == 2
+    assert cleaned[1].is_shipped is True
+
+    only_1997 = clean_orders(orders, order_year=1997).collect()
+    assert [row.order_id for row in only_1997] == [1]
 
 
 def test_build_data_enriched(spark, sample_bronze_dfs):
