@@ -1,4 +1,6 @@
-from pyspark.sql import DataFrame
+import os
+
+from pyspark.sql import DataFrame, SparkSession
 
 from utils import (
     clean_customers,
@@ -10,6 +12,14 @@ from utils import (
 
 
 def build_data_enriched(dataframes: dict) -> DataFrame:
+    """Build one enriched row per shipped order detail from Bronze tables."""
+    required = {
+        "customers", "orders", "order_details", "employees",
+        "products", "categories", "shippers",
+    }
+    missing = required.difference(dataframes)
+    if missing:
+        raise ValueError("Missing Bronze tables: " + ", ".join(sorted(missing)))
 
     # 1. Nettoyage individuel
     df_customers = clean_customers(dataframes["customers"]) \
@@ -70,39 +80,38 @@ def build_data_enriched(dataframes: dict) -> DataFrame:
 
     return df_full_final
 
-if __name__ == "__main__":
-    import traceback
-    from pyspark.sql import SparkSession
+def main() -> None:
     from reader import DataReader
     from CurrencyEnrichment import CountryCurrencyTransformer
 
-    spark = SparkSession.builder \
-        .appName("TradeCorpTransformer") \
-        .getOrCreate()
+    spark = SparkSession.builder.appName("TradeCorpTransformer").getOrCreate()
 
     try:
-        bronze_path = "/home/jovyan/src/data/bronze"
+        bronze_path = os.getenv("BRONZE_PATH", "/home/jovyan/data/bronze")
         table_names = [
             "customers", "orders", "order_details", "products",
-            "categories", "suppliers", "employees", "shippers", "currency",
+            "categories", "employees", "shippers",
         ]
         dfs = DataReader.load_bronze_data(spark, bronze_path, table_names)
 
         df_enriched = build_data_enriched(dfs)
 
-        currency_transformer = CountryCurrencyTransformer(spark)
+        currency_path = os.getenv("CURRENCY_CSV_PATH")
+        currency_transformer = (
+            CountryCurrencyTransformer(spark, currency_csv_path=currency_path)
+            if currency_path else CountryCurrencyTransformer(spark)
+        )
         df_final = currency_transformer.enrich(df_enriched, country_column="customer_country")
 
-        output_dir_path = "/home/jovyan/src/data/transformed_tradecorp_data"
-        
-        # Action trigger to force immediate evaluation and surface hidden runtime errors
-        print(f"Row count to write: {df_final.count()}")
+        output_dir_path = os.getenv(
+            "SILVER_PATH", "/home/jovyan/data/silver/transformed_tradecorp_data"
+        )
         df_final.write.mode("overwrite").parquet(output_dir_path)
         print("Pipeline finished successfully.")
 
-    except Exception as e:
-        print("\n--- ERROR DETECTED IN PYSPARK PIPELINE ---")
-        traceback.print_exc()
-
     finally:
         spark.stop()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,5 +1,5 @@
 import pyspark.sql
-from pyspark.sql.functions import col, trim, upper, lit, initcap
+from pyspark.sql.functions import col, trim, upper, lit, initcap, concat_ws
 
 
 class DATA_PATH_currency:
@@ -56,8 +56,6 @@ def spark_session(app_name="TradeCorp ETL Utils", master=None, configs=None):
         builder = builder.config(key, value)
 
     return builder.getOrCreate()
-
-df_customers, df_orders, df_order_details, df_products, df_categories, df_suppliers, df_employees, df_shippers, df_currency= data_extraction()
 
 def clean_orders(df):
     from pyspark.sql.functions import col, when
@@ -129,7 +127,7 @@ def clean_employees(df):
     columns_to_keep = ["employee_id", "first_name", "last_name", "title", "hire_date", "city", "country" ]
     return(
             df.select([column for column in columns_to_keep if column in df.columns])
-            .withColumn("full_name", trim(col("first_name")) + lit(" ") + trim(col("last_name")))
+            .withColumn("full_name", concat_ws(" ", trim(col("first_name")), trim(col("last_name"))))
     )
 
 #clean shippers
@@ -228,7 +226,9 @@ def write_bronze(df, table_name, output_path, mode="overwrite"):
 
 if __name__=="__main__":
 
-    PATH = "/home/jovyan/src/data/bronze"
+    df_customers, df_orders, df_order_details, df_products, df_categories, df_suppliers, df_employees, df_shippers, df_currency = data_extraction()
+
+    PATH = "/home/jovyan/data/bronze"
 
     # Appliquer le nettoyage à chaque table
     tables = {

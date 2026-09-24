@@ -1,25 +1,17 @@
-import os
-import tempfile
-import pytest
-from pyspark.sql import SparkSession
-from pyspark.testing import assertDataFrameEqual
-
-#path
-
-# /home/jovyan/tests/conftest.py
 import sys
+import tempfile
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src")) 
+import pytest
+from pyspark.sql import SparkSession
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-import CurrencyEnrichment
 from CurrencyEnrichment import CountryCurrencyTransformer
 
 
 @pytest.fixture(scope="session")
 def spark():
-    """Initializes a local SparkSession for pytest."""
     session = (
         SparkSession.builder
         .master("local[1]")
@@ -31,86 +23,91 @@ def spark():
 
 
 @pytest.fixture
-def mock_currency_csv():
-    """Creates a temporary CSV file mimicking country_currency.csv."""
-    csv_content = (
-        "country,currency_code,currency_name\n"
-        "France,EUR,Euro\n"
-        "USA,USD,US Dollar\n"
-        "UK,GBP,British Pound\n"
-    )
-    with tempfile.NamedTemporaryFile("w+", delete=False, suffix=".csv") as tmp:
-        tmp.write(csv_content)
-        tmp_path = tmp.name
+def currency_csv():
+    """Create the country/currency reference file expected by the transformer."""
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".csv", encoding="utf-8", delete=False
+    ) as temporary_file:
+        temporary_file.write(
+            "country,currency\n"
+            "France,EUR\n"
+            "USA,USD\n"
+            "UK,GBP\n"
+        )
+        path = temporary_file.name
 
-    yield tmp_path
+    try:
+        yield path
+    finally:
+        Path(path).unlink(missing_ok=True)
 
-    # Cleanup temporary file after test run
-    if os.path.exists(tmp_path):
-        os.remove(tmp_path)
 
-
-def test_currency_enrichment_mapping(spark, mock_currency_csv):
-    """Verifies that known countries are correctly enriched with currency info."""
-    
-    # 1. Create test input DataFrame
+def test_enriches_known_countries_and_preserves_input_columns(spark, currency_csv):
     input_data = [
-        {"order_id": 1, "customer_country": "France"},
-        {"order_id": 2, "customer_country": "USA"},
-        {"order_id": 3, "customer_country": "UK"},
+        {"order_id": 1, "customer_country": "FRANCE", "amount": 125.5},
+        {"order_id": 2, "customer_country": "USA", "amount": 250.0},
+        {"order_id": 3, "customer_country": "UK", "amount": 75.0},
     ]
-    df_input = spark.createDataFrame(input_data)
 
-    # 2. Instantiate transformer pointing to mock CSV
-    transformer = CountryCurrencyTransformer(spark, csv_path=mock_currency_csv)
-    df_result = transformer.enrich(df_input, country_column="customer_country")
+    result = CountryCurrencyTransformer(
+        spark, currency_csv_path=currency_csv
+    ).enrich(spark.createDataFrame(input_data))
 
-    # 3. Define Expected Output
-    expected_data = [
-        {"order_id": 1, "customer_country": "France", "currency_code": "EUR", "currency_name": "Euro"},
-        {"order_id": 2, "customer_country": "USA", "currency_code": "USD", "currency_name": "US Dollar"},
-        {"order_id": 3, "customer_country": "UK", "currency_code": "GBP", "currency_name": "British Pound"},
-    ]
-    df_expected = spark.createDataFrame(expected_data)
-
-    # Assert equality (PySpark 3.5+)
-    assertDataFrameEqual(df_result, df_expected)
+    assert result.columns == ["amount", "customer_country", "order_id", "currency"]
+    assert {row.order_id: row.currency for row in result.collect()} == {
+        1: "EUR",
+        2: "USD",
+        3: "GBP",
+    }
 
 
-def test_currency_enrichment_unknown_country(spark, mock_currency_csv):
-    """Verifies behavior when input contains NULL or non-matching countries."""
-    
+def test_unknown_or_null_country_keeps_row_with_null_currency(spark, currency_csv):
     input_data = [
-        {"order_id": 1, "customer_country": "France"},
-        {"order_id": 2, "customer_country": "Atlantis"},  # Unknown country
-        {"order_id": 3, "customer_country": None},        # Null country
+        {"order_id": 1, "customer_country": "FRANCE"},
+        {"order_id": 2, "customer_country": "ATLANTIS"},
+        {"order_id": 3, "customer_country": None},
     ]
-    df_input = spark.createDataFrame(input_data)
 
-    transformer = CountryCurrencyTransformer(spark, csv_path=mock_currency_csv)
-    df_result = transformer.enrich(df_input, country_column="customer_country")
+    result = CountryCurrencyTransformer(
+        spark, currency_csv_path=currency_csv
+    ).enrich(spark.createDataFrame(input_data))
 
-    # Unknown/Null countries should result in NULL currency fields (Left Join behavior)
-    expected_data = [
-        {"order_id": 1, "customer_country": "France", "currency_code": "EUR", "currency_name": "Euro"},
-        {"order_id": 2, "customer_country": "Atlantis", "currency_code": None, "currency_name": None},
-        {"order_id": 3, "customer_country": None, "currency_code": None, "currency_name": None},
-    ]
-    df_expected = spark.createDataFrame(expected_data)
-
-    assertDataFrameEqual(df_result, df_expected)
+    assert result.count() == 3
+    assert {row.order_id: row.currency for row in result.collect()} == {
+        1: "EUR",
+        2: None,
+        3: None,
+    }
 
 
-def test_currency_enrichment_columns_preserved(spark, mock_currency_csv):
-    """Ensures existing columns are kept and currency columns are appended."""
-    
-    input_data = [
-        {"order_id": 1001, "customer_country": "France", "amount": 250.0}
-    ]
-    df_input = spark.createDataFrame(input_data)
+def test_reuses_the_loaded_reference_dataframe(spark, currency_csv):
+    transformer = CountryCurrencyTransformer(spark, currency_csv_path=currency_csv)
 
-    transformer = CountryCurrencyTransformer(spark, csv_path=mock_currency_csv)
-    df_result = transformer.enrich(df_input, country_column="customer_country")
+    first_reference = transformer.load_currency()
+    second_reference = transformer.load_currency()
 
-    expected_cols = {"order_id", "customer_country", "amount", "currency_code", "currency_name"}
-    assert set(df_result.columns) == expected_cols
+    assert first_reference is second_reference
+    assert first_reference.columns == ["country", "currency"]
+
+
+def test_rejects_a_missing_country_column(spark, currency_csv):
+    transformer = CountryCurrencyTransformer(spark, currency_csv_path=currency_csv)
+    dataframe = spark.createDataFrame([{"order_id": 1}])
+
+    with pytest.raises(ValueError, match="'customer_country' column not found"):
+        transformer.enrich(dataframe)
+
+
+def test_rejects_an_invalid_reference_file(spark):
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".csv", encoding="utf-8", delete=False
+    ) as temporary_file:
+        temporary_file.write("country,currency_code\nFRANCE,EUR\n")
+        path = temporary_file.name
+
+    try:
+        transformer = CountryCurrencyTransformer(spark, currency_csv_path=path)
+        with pytest.raises(ValueError, match="missing columns: currency"):
+            transformer.load_currency()
+    finally:
+        Path(path).unlink(missing_ok=True)
