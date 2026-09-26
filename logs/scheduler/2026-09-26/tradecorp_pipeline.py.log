@@ -1202,3 +1202,10 @@
 [2026-09-26T11:49:45.332+0000] {logging_mixin.py:190} INFO - [2026-09-26T11:49:45.332+0000] {dag.py:3239} INFO - Sync 1 DAGs
 [2026-09-26T11:49:45.361+0000] {logging_mixin.py:190} INFO - [2026-09-26T11:49:45.360+0000] {dag.py:4180} INFO - Setting next_dagrun for tradecorp_etl to 2026-09-26 00:00:00+00:00, run_after=2026-09-27 00:00:00+00:00
 [2026-09-26T11:49:45.386+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/tradecorp_pipeline.py took 0.126 seconds
+[2026-09-26T11:50:15.560+0000] {processor.py:186} INFO - Started process (PID=4039) to work on /opt/airflow/dags/tradecorp_pipeline.py
+[2026-09-26T11:50:15.563+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/tradecorp_pipeline.py for tasks to queue
+[2026-09-26T11:50:15.566+0000] {logging_mixin.py:190} INFO - [2026-09-26T11:50:15.566+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/tradecorp_pipeline.py
+[2026-09-26T11:50:15.597+0000] {processor.py:925} INFO - DAG(s) 'tradecorp_etl' retrieved from /opt/airflow/dags/tradecorp_pipeline.py
+[2026-09-26T11:50:15.636+0000] {logging_mixin.py:190} INFO - [2026-09-26T11:50:15.636+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-26T11:50:15.665+0000] {logging_mixin.py:190} INFO - [2026-09-26T11:50:15.665+0000] {dag.py:4180} INFO - Setting next_dagrun for tradecorp_etl to 2026-09-26 00:00:00+00:00, run_after=2026-09-27 00:00:00+00:00
+[2026-09-26T11:50:15.689+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/tradecorp_pipeline.py took 0.135 seconds
