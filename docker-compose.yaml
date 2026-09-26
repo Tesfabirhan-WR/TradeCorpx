@@ -52,7 +52,9 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql://airflow:airflow@airflow-postgres-tradecorp/airflow
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
-    user: "${AIRFLOW_UID:-50000}"
+    ports:
+      - "8082:8080"
+    user: "${AIRFLOW_UID:-1000}:0"
     command: >
       bash -c "
       airflow db migrate &&
@@ -69,6 +71,8 @@ services:
       - ./logs:/opt/airflow/logs
       - ./src:/opt/airflow/src
       - ./data:/opt/airflow/data
+      - ./src:/home/jovyan/src
+      - ./data:/home/jovyan/data
 
   airflow-webserver:
     build:
@@ -76,6 +80,7 @@ services:
       dockerfile: Dockerfile.airflow
     command: webserver
     container_name: airflow-webserver
+    user: "${AIRFLOW_UID:-1000}:0"
     depends_on:
       airflow-postgres-tradecorp:
         condition: service_healthy
@@ -92,6 +97,8 @@ services:
       - ./logs:/opt/airflow/logs
       - ./src:/opt/airflow/src
       - ./data:/opt/airflow/data
+      - ./src:/home/jovyan/src
+      - ./data:/home/jovyan/data
     restart: unless-stopped
 
   airflow-scheduler:
@@ -100,6 +107,7 @@ services:
       dockerfile: Dockerfile.airflow
     command: scheduler
     container_name: airflow-scheduler
+    user: "${AIRFLOW_UID:-1000}:0"
     depends_on:
       airflow-postgres-tradecorp:
         condition: service_healthy
@@ -109,11 +117,15 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql://airflow:airflow@airflow-postgres-tradecorp/airflow
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+    env_file:
+      - .env
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./src:/opt/airflow/src
       - ./data:/opt/airflow/data
+      - ./src:/home/jovyan/src
+      - ./data:/home/jovyan/data
     healthcheck:
       test:
         [

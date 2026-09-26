@@ -18,8 +18,11 @@ def build_data_enriched(dataframes: dict) -> DataFrame:
         .withColumnRenamed("city", "customer_city")
         
     df_orders = clean_orders(dataframes["orders"])
+    
     df_order_details = add_sous_total(dataframes["order_details"])
+    
     df_employees = clean_employees(dataframes["employees"])
+    
     df_products = clean_products(dataframes["products"])
 
     df_categories = dataframes["categories"]

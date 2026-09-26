@@ -1,0 +1,227 @@
+[2026-09-25T08:40:18.585+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-09-25T08:40:18.609+0000] {taskinstance.py:2603} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: tradecorp_etl.extract_from_azure scheduled__2026-09-24T00:00:00+00:00 [queued]>
+[2026-09-25T08:40:18.621+0000] {taskinstance.py:2603} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: tradecorp_etl.extract_from_azure scheduled__2026-09-24T00:00:00+00:00 [queued]>
+[2026-09-25T08:40:18.623+0000] {taskinstance.py:2856} INFO - Starting attempt 3 of 3
+[2026-09-25T08:40:18.640+0000] {taskinstance.py:2879} INFO - Executing <Task(BashOperator): extract_from_azure> on 2026-09-24 00:00:00+00:00
+[2026-09-25T08:40:18.651+0000] {standard_task_runner.py:72} INFO - Started process 895 to run task
+[2026-09-25T08:40:18.654+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'tradecorp_etl', 'extract_from_azure', 'scheduled__2026-09-24T00:00:00+00:00', '--job-id', '4', '--raw', '--subdir', 'DAGS_FOLDER/tradecorp_pipeline.py', '--cfg-path', '/tmp/tmpyr1t72j5']
+[2026-09-25T08:40:18.658+0000] {standard_task_runner.py:105} INFO - Job 4: Subtask extract_from_azure
+[2026-09-25T08:40:18.722+0000] {task_command.py:467} INFO - Running <TaskInstance: tradecorp_etl.extract_from_azure scheduled__2026-09-24T00:00:00+00:00 [running]> on host afd995bbc8e3
+[2026-09-25T08:40:18.805+0000] {taskinstance.py:3122} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='tradecorp_data_eng' AIRFLOW_CTX_DAG_ID='tradecorp_etl' AIRFLOW_CTX_TASK_ID='extract_from_azure' AIRFLOW_CTX_EXECUTION_DATE='2026-09-24T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='3' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-09-24T00:00:00+00:00'
+[2026-09-25T08:40:18.808+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2026-09-25T08:40:18.820+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-09-25T08:40:18.824+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', '/home/***/.local/bin/python /home/jovyan/src/reader.py']
+[2026-09-25T08:40:18.843+0000] {subprocess.py:86} INFO - Output:
+[2026-09-25T08:40:19.928+0000] {subprocess.py:93} INFO - 2026-09-25 08:40:19,927 - INFO - Request URL: 'https://zawlstorage.blob.core.windows.net/raw?restype=REDACTED&comp=REDACTED&include=REDACTED'
+[2026-09-25T08:40:19.930+0000] {subprocess.py:93} INFO - Request method: 'GET'
+[2026-09-25T08:40:19.932+0000] {subprocess.py:93} INFO - Request headers:
+[2026-09-25T08:40:19.934+0000] {subprocess.py:93} INFO -     'x-ms-version': 'REDACTED'
+[2026-09-25T08:40:19.936+0000] {subprocess.py:93} INFO -     'Accept': 'application/xml'
+[2026-09-25T08:40:19.938+0000] {subprocess.py:93} INFO -     'User-Agent': 'azsdk-python-storage-blob/12.22.0 Python/3.11.11 (Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.36)'
+[2026-09-25T08:40:19.940+0000] {subprocess.py:93} INFO -     'x-ms-date': 'REDACTED'
+[2026-09-25T08:40:19.941+0000] {subprocess.py:93} INFO -     'x-ms-client-request-id': 'bd95e1bc-b8bc-11f1-b73e-82c878e93bd9'
+[2026-09-25T08:40:19.942+0000] {subprocess.py:93} INFO -     'Authorization': 'REDACTED'
+[2026-09-25T08:40:19.944+0000] {subprocess.py:93} INFO - No body was attached to the request
+[2026-09-25T08:40:20.102+0000] {subprocess.py:93} INFO - 2026-09-25 08:40:20,102 - INFO - Response status: 200
+[2026-09-25T08:40:20.104+0000] {subprocess.py:93} INFO - Response headers:
+[2026-09-25T08:40:20.106+0000] {subprocess.py:93} INFO -     'Transfer-Encoding': 'chunked'
+[2026-09-25T08:40:20.107+0000] {subprocess.py:93} INFO -     'Content-Type': 'application/xml'
+[2026-09-25T08:40:20.109+0000] {subprocess.py:93} INFO -     'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+[2026-09-25T08:40:20.110+0000] {subprocess.py:93} INFO -     'x-ms-request-id': 'c65126f8-f01e-0041-19c9-4c9b09000000'
+[2026-09-25T08:40:20.112+0000] {subprocess.py:93} INFO -     'x-ms-client-request-id': 'bd95e1bc-b8bc-11f1-b73e-82c878e93bd9'
+[2026-09-25T08:40:20.113+0000] {subprocess.py:93} INFO -     'x-ms-version': 'REDACTED'
+[2026-09-25T08:40:20.114+0000] {subprocess.py:93} INFO -     'Date': 'Fri, 25 Sep 2026 08:40:20 GMT'
+[2026-09-25T08:40:20.122+0000] {subprocess.py:93} INFO - Traceback (most recent call last):
+[2026-09-25T08:40:20.123+0000] {subprocess.py:93} INFO -   File "/home/jovyan/src/reader.py", line 110, in <module>
+[2026-09-25T08:40:20.125+0000] {subprocess.py:93} INFO -     files = DataReader.download_azure_raw()
+[2026-09-25T08:40:20.126+0000] {subprocess.py:93} INFO -             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-09-25T08:40:20.127+0000] {subprocess.py:93} INFO -   File "/home/jovyan/src/reader.py", line 78, in download_azure_raw
+[2026-09-25T08:40:20.129+0000] {subprocess.py:93} INFO -     with open(destination, "wb") as file:
+[2026-09-25T08:40:20.130+0000] {subprocess.py:93} INFO -          ^^^^^^^^^^^^^^^^^^^^^^^
+[2026-09-25T08:40:20.131+0000] {subprocess.py:93} INFO - PermissionError: [Errno 13] Permission denied: '/home/jovyan/src/data/azure_tradecorp_raw/books/bookstreamvault.csv'
+[2026-09-25T08:40:20.286+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2026-09-25T08:40:20.308+0000] {taskinstance.py:3301} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 762, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/operators/bash.py", line 249, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-09-25T08:40:20.314+0000] {taskinstance.py:1225} INFO - Marking task as FAILED. dag_id=tradecorp_etl, task_id=extract_from_azure, run_id=scheduled__2026-09-24T00:00:00+00:00, execution_date=20260924T000000, start_date=20260925T084018, end_date=20260925T084020
+[2026-09-25T08:40:20.332+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2026-09-25T08:40:20.335+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 4 for task extract_from_azure (Bash command failed. The command returned a non-zero exit code 1.; 895)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/utils/cli.py", line 115, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 2995, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3149, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3173, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 762, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/operators/bash.py", line 249, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-09-25T08:40:20.360+0000] {local_task_job_runner.py:261} INFO - Task exited with return code 1
+[2026-09-25T08:40:20.388+0000] {taskinstance.py:3891} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-09-25T08:40:20.396+0000] {local_task_job_runner.py:240} INFO - ::endgroup::
+[2026-09-25T21:10:25.821+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-09-25T21:10:25.901+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: tradecorp_etl.extract_from_azure scheduled__2026-09-24T00:00:00+00:00 [queued]>
+[2026-09-25T21:10:25.934+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: tradecorp_etl.extract_from_azure scheduled__2026-09-24T00:00:00+00:00 [queued]>
+[2026-09-25T21:10:25.938+0000] {taskinstance.py:2867} INFO - Starting attempt 3 of 3
+[2026-09-25T21:10:25.981+0000] {taskinstance.py:2890} INFO - Executing <Task(BashOperator): extract_from_azure> on 2026-09-24 00:00:00+00:00
+[2026-09-25T21:10:25.997+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'tradecorp_etl', 'extract_from_azure', 'scheduled__2026-09-24T00:00:00+00:00', '--job-id', '4', '--raw', '--subdir', 'DAGS_FOLDER/tradecorp_pipeline.py', '--cfg-path', '/tmp/tmpkqx6l839']
+[2026-09-25T21:10:26.009+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=718) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-09-25T21:10:26.009+0000] {standard_task_runner.py:105} INFO - Job 4: Subtask extract_from_azure
+[2026-09-25T21:10:26.010+0000] {standard_task_runner.py:72} INFO - Started process 725 to run task
+[2026-09-25T21:10:26.198+0000] {task_command.py:467} INFO - Running <TaskInstance: tradecorp_etl.extract_from_azure scheduled__2026-09-24T00:00:00+00:00 [running]> on host 19cad8c1b283
+[2026-09-25T21:10:26.349+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='tradecorp_data_eng' AIRFLOW_CTX_DAG_ID='tradecorp_etl' AIRFLOW_CTX_TASK_ID='extract_from_azure' AIRFLOW_CTX_EXECUTION_DATE='2026-09-24T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='3' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-09-24T00:00:00+00:00'
+[2026-09-25T21:10:26.352+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2026-09-25T21:10:26.396+0000] {subprocess.py:78} INFO - Tmp dir root location: /tmp
+[2026-09-25T21:10:26.400+0000] {subprocess.py:88} INFO - Running command: ['/usr/bin/bash', '-c', '/home/***/.local/bin/python /home/jovyan/src/reader.py']
+[2026-09-25T21:10:26.430+0000] {subprocess.py:99} INFO - Output:
+[2026-09-25T21:10:28.180+0000] {subprocess.py:106} INFO - 2026-09-25 21:10:28,179 - INFO - Request URL: 'https://zawlstorage.blob.core.windows.net/raw?restype=REDACTED&comp=REDACTED&include=REDACTED'
+[2026-09-25T21:10:28.181+0000] {subprocess.py:106} INFO - Request method: 'GET'
+[2026-09-25T21:10:28.182+0000] {subprocess.py:106} INFO - Request headers:
+[2026-09-25T21:10:28.184+0000] {subprocess.py:106} INFO -     'x-ms-version': 'REDACTED'
+[2026-09-25T21:10:28.185+0000] {subprocess.py:106} INFO -     'Accept': 'application/xml'
+[2026-09-25T21:10:28.186+0000] {subprocess.py:106} INFO -     'User-Agent': 'azsdk-python-storage-blob/12.22.0 Python/3.12.9 (Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.36)'
+[2026-09-25T21:10:28.188+0000] {subprocess.py:106} INFO -     'x-ms-date': 'REDACTED'
+[2026-09-25T21:10:28.189+0000] {subprocess.py:106} INFO -     'x-ms-client-request-id': '889818c2-b925-11f1-a1d8-7a0418f3a102'
+[2026-09-25T21:10:28.190+0000] {subprocess.py:106} INFO -     'Authorization': 'REDACTED'
+[2026-09-25T21:10:28.191+0000] {subprocess.py:106} INFO - No body was attached to the request
+[2026-09-25T21:10:28.339+0000] {subprocess.py:106} INFO - 2026-09-25 21:10:28,339 - INFO - Response status: 200
+[2026-09-25T21:10:28.341+0000] {subprocess.py:106} INFO - Response headers:
+[2026-09-25T21:10:28.342+0000] {subprocess.py:106} INFO -     'Transfer-Encoding': 'chunked'
+[2026-09-25T21:10:28.343+0000] {subprocess.py:106} INFO -     'Content-Type': 'application/xml'
+[2026-09-25T21:10:28.344+0000] {subprocess.py:106} INFO -     'Server': 'Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0'
+[2026-09-25T21:10:28.346+0000] {subprocess.py:106} INFO -     'x-ms-request-id': '061a0ce5-b01e-0040-3332-4dc4d5000000'
+[2026-09-25T21:10:28.347+0000] {subprocess.py:106} INFO -     'x-ms-client-request-id': '889818c2-b925-11f1-a1d8-7a0418f3a102'
+[2026-09-25T21:10:28.348+0000] {subprocess.py:106} INFO -     'x-ms-version': 'REDACTED'
+[2026-09-25T21:10:28.350+0000] {subprocess.py:106} INFO -     'Date': 'Fri, 25 Sep 2026 21:10:27 GMT'
+[2026-09-25T21:10:28.361+0000] {subprocess.py:106} INFO - Traceback (most recent call last):
+[2026-09-25T21:10:28.362+0000] {subprocess.py:106} INFO -   File "/home/jovyan/src/reader.py", line 110, in <module>
+[2026-09-25T21:10:28.365+0000] {subprocess.py:106} INFO -     files = DataReader.download_azure_raw()
+[2026-09-25T21:10:28.366+0000] {subprocess.py:106} INFO -             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-09-25T21:10:28.368+0000] {subprocess.py:106} INFO -   File "/home/jovyan/src/reader.py", line 78, in download_azure_raw
+[2026-09-25T21:10:28.369+0000] {subprocess.py:106} INFO -     with open(destination, "wb") as file:
+[2026-09-25T21:10:28.371+0000] {subprocess.py:106} INFO -          ^^^^^^^^^^^^^^^^^^^^^^^
+[2026-09-25T21:10:28.373+0000] {subprocess.py:106} INFO - PermissionError: [Errno 13] Permission denied: '/home/jovyan/src/data/azure_tradecorp_raw/categories.csv'
+[2026-09-25T21:10:28.550+0000] {subprocess.py:110} INFO - Command exited with return code 1
+[2026-09-25T21:10:28.567+0000] {taskinstance.py:3313} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 763, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 276, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-09-25T21:10:28.585+0000] {taskinstance.py:1226} INFO - Marking task as FAILED. dag_id=tradecorp_etl, task_id=extract_from_azure, run_id=scheduled__2026-09-24T00:00:00+00:00, execution_date=20260924T000000, start_date=20260925T211025, end_date=20260925T211028
+[2026-09-25T21:10:28.641+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2026-09-25T21:10:28.642+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 4 for task extract_from_azure (Bash command failed. The command returned a non-zero exit code 1.; 725)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3006, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 274, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3161, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3185, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 763, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 276, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-09-25T21:10:28.696+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2026-09-25T21:10:28.742+0000] {taskinstance.py:3901} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-09-25T21:10:28.749+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
