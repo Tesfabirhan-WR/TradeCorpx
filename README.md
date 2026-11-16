@@ -139,7 +139,7 @@ The project expects Azure-related credentials and runtime configuration values s
 - `BRONZE_PATH`
 - `SILVER_PATH`
 
-The ingestion step reads these values from the environment and will fail fast if required Azure settings are missing.
+The ingestion step reads these values from the environment and will fail fast if required Azure settings are missing. By default, the currency reference is expected as `country_currency.csv` in the downloaded raw-data directory, with `country` and `currency` columns. Set `CURRENCY_CSV_PATH` in `.env` to use a different file location.
 
 ## Quick Start
 
@@ -152,14 +152,14 @@ docker compose up --build -d
 This starts the configured services, including:
 
 - Spark workspace on port `8889`
-- Airflow web UI on port `8081`
-- PostgreSQL on port `5432`
+- Airflow web UI on port `8083`
+- PostgreSQL on port `5433` (container port `5432`)
 
 ## Airflow Access
 
 After startup, open the Airflow UI in your browser:
 
-- URL: http://localhost:8081
+- URL: http://localhost:8083
 - Username: `admin`
 - Password: `admin`
 

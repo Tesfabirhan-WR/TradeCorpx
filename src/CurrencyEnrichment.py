@@ -6,15 +6,17 @@ DataFrame with a "currency" column, joined on country.
 """
 
 import logging
+import os
 
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.functions import col, trim, upper
 
 logger = logging.getLogger(__name__)
 
-# Local folder for the currency reference data
-CURRENCY_DIR = "/home/jovyan/src/currency"
-CURRENCY_CSV_PATH = f"{CURRENCY_DIR}/country_currency.csv"
+CURRENCY_CSV_PATH = os.getenv(
+    "CURRENCY_CSV_PATH",
+    "/root/projects/TradeCorpx/src/data/azure_tradecorp_raw/country_currency.csv",
+)
 
 
 class CountryCurrencyTransformer:

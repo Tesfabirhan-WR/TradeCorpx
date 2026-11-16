@@ -19,7 +19,10 @@ SRC_DIR = Path("/home/jovyan/src")
 PYTHON_BIN = os.getenv("TRADECORP_PYTHON_BIN", sys.executable)
 RAW_DIR = SRC_DIR / "data" / "azure_tradecorp_raw"
 CURRENCY_FILE = Path(
-    os.getenv("CURRENCY_CSV_PATH", str(SRC_DIR / "currency" / "country_currency.csv"))
+    os.getenv(
+        "CURRENCY_CSV_PATH",
+        str(RAW_DIR / "country_currency.csv"),
+    )
 )
 BRONZE_DIR = Path(os.getenv("BRONZE_PATH", "/home/jovyan/data/bronze"))
 SILVER_DIR = Path(os.getenv("SILVER_PATH", "/home/jovyan/data/silver"))

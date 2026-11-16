@@ -8,7 +8,7 @@ from pyspark.sql.types import DateType, DoubleType
 class DATA_PATH_currency:
     """Small path adapter used to load the currency reference dataset."""
 
-    def __init__(self, base_path="/home/jovyan/src/currency"):
+    def __init__(self, base_path="/home/jovyan/src/data/azure_tradecorp_raw"):
         self.base_path = base_path
 
     @property
