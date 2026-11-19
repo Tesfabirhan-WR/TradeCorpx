@@ -1,4 +1,5 @@
 from pyspark.sql import DataFrame
+from pyspark.sql.functions import col
 
 from utils import (
     clean_customers,
@@ -10,6 +11,20 @@ from utils import (
 
 
 def build_data_enriched(dataframes: dict) -> DataFrame:
+    required_tables = {
+        "customers",
+        "orders",
+        "order_details",
+        "products",
+        "categories",
+        "employees",
+        "shippers",
+    }
+    missing_tables = sorted(required_tables.difference(dataframes))
+    if missing_tables:
+        raise ValueError(
+            "Missing Bronze tables: " + ", ".join(missing_tables)
+        )
 
     # 1. Nettoyage individuel
     df_customers = clean_customers(dataframes["customers"]) \
@@ -44,6 +59,7 @@ def build_data_enriched(dataframes: dict) -> DataFrame:
         .join(df_products_enriched, on="product_id", how="left")
         .join(df_employees, on="employee_id", how="left")
         .join(df_shippers, on="shipper_id", how="left")
+        .filter(col("is_shipped"))
     )
 
     # 4. Sélection finale

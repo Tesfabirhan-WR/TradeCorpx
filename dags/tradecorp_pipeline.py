@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pendulum
 from airflow import DAG
-from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator
+from airflow.providers.standard.operators.bash import BashOperator
+from airflow.providers.standard.operators.python import PythonOperator
 
 logger = logging.getLogger("airflow.task")
 

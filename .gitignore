@@ -15,3 +15,4 @@ plugins
 notebooks/.conda
 notebooks/.venv
 logs
+.mypy_cache
